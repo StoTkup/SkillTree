@@ -3,7 +3,6 @@ package ru.skilltree.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,7 +18,7 @@ import ru.skilltree.SkillTreeMod;
 public class SoulHud {
 
     private static final int SOUL_COLOR = 0xFF20A6A0;
-    private static final int BACKGROUND_COLOR = 0xAA082D2D;
+    private static final int TEXT_COLOR = 0xFFFFFFFF;
 
     @SubscribeEvent
     public static void registerGuiLayers(RegisterGuiLayersEvent event) {
@@ -46,18 +45,23 @@ public class SoulHud {
         int x = graphics.guiWidth() - 100;
         int y = graphics.guiHeight() - 45;
 
-        graphics.fill(
-                x - 6, y - 5,
-                x + 94, y + 17,
-                BACKGROUND_COLOR
+        String icon = "◆";
+
+        graphics.drawString(
+                minecraft.font,
+                icon,
+                x,
+                y,
+                SOUL_COLOR,
+                true
         );
 
         graphics.drawString(
                 minecraft.font,
-                "◆ Души: " + souls,
-                x,
+                "Души: " + souls,
+                x + minecraft.font.width(icon) + 3,
                 y,
-                SOUL_COLOR,
+                TEXT_COLOR,
                 true
         );
     }
