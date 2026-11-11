@@ -1,7 +1,6 @@
 package ru.skilltree.attachment;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -22,7 +21,6 @@ public class ModAttachments {
             ATTACHMENTS.register("souls", () ->
                     AttachmentType.builder(() -> 0)
         .serialize(Codec.INT)
-        .sync(ByteBufCodecs.VAR_INT)
         .copyOnDeath()
         .build()
             );
