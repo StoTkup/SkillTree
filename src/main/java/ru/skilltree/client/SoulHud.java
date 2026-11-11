@@ -42,8 +42,8 @@ public class SoulHud {
                 ru.skilltree.attachment.ModAttachments.SOULS.get()
         );
 
-        int x = graphics.guiWidth() - 100;
-        int y = graphics.guiHeight() - 45;
+        int x = graphics.guiWidth() - 70;
+        int y = graphics.guiHeight() - 30;
 
         String icon = "◆";
 
