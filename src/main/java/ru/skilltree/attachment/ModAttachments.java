@@ -22,7 +22,6 @@ public class ModAttachments {
             ATTACHMENTS.register("souls", () ->
                     AttachmentType.builder(() -> 0)
                             .serialize(Codec.INT)
-                            .sync(ByteBufCodecs.VAR_INT)
                             .copyOnDeath()
                             .build()
             );
