@@ -21,9 +21,10 @@ public class ModAttachments {
     public static final Supplier<AttachmentType<Integer>> SOULS =
             ATTACHMENTS.register("souls", () ->
                     AttachmentType.builder(() -> 0)
-                            .serialize(Codec.INT)
-                            .copyOnDeath()
-                            .build()
+        .serialize(Codec.INT)
+        .sync(ByteBufCodecs.VAR_INT)
+        .copyOnDeath()
+        .build()
             );
 
     public static void register(IEventBus modEventBus) {
