@@ -21,6 +21,16 @@ public class SkillTreeScreen extends Screen {
     protected void init() {
         super.init();
     }
+    
+    @Override
+public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    if (ModKeyMappings.OPEN_SKILL_TREE.matches(keyCode, scanCode)) {
+        onClose();
+        return true;
+    }
+
+    return super.keyPressed(keyCode, scanCode, modifiers);
+}
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
