@@ -20,9 +20,13 @@ public class SkillTreeClientEvents {
         while (ModKeyMappings.OPEN_SKILL_TREE.consumeClick()) {
             Minecraft minecraft = Minecraft.getInstance();
 
-            if (minecraft.player != null && minecraft.screen == null) {
-                minecraft.setScreen(new SkillTreeScreen());
-            }
+            if (minecraft.player != null) {
+    if (minecraft.screen instanceof SkillTreeScreen) {
+        minecraft.setScreen(null);
+    } else if (minecraft.screen == null) {
+        minecraft.setScreen(new SkillTreeScreen());
+    }
+}
         }
     }
 }
