@@ -17,6 +17,16 @@ public class SkillTreeScreen extends Screen {
     private static final int TEXT_COLOR = 0xFFFFFFFF;
     private static final int SOUL_COLOR = 0xFF65E8DF;
 
+    private static final double MIN_ZOOM = 0.4D;
+    private static final double MAX_ZOOM = 2.5D;
+    private static final double ZOOM_STEP = 1.1D;
+
+    private double cameraX = 0.0D;
+    private double cameraY = 0.0D;
+    private double zoom = 1.0D;
+
+    private boolean draggingCamera = false;
+
     public SkillTreeScreen() {
         super(Component.literal("Древо талантов"));
     }
@@ -37,7 +47,80 @@ public class SkillTreeScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (button == 1) {
+            draggingCamera = true;
+            return true;
+        }
+
+        return super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (button == 1) {
+            draggingCamera = false;
+            return true;
+        }
+
+        return super.mouseReleased(mouseX, mouseY, button);
+    }
+
+    @Override
+    public boolean mouseDragged(
+            double mouseX,
+            double mouseY,
+            int button,
+            double dragX,
+            double dragY
+    ) {
+        if (button == 1 && draggingCamera) {
+            cameraX += dragX;
+            cameraY += dragY;
+            return true;
+        }
+
+        return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+    }
+
+    @Override
+    public boolean mouseScrolled(
+            double mouseX,
+            double mouseY,
+            double scrollX,
+            double scrollY
+    ) {
+        if (scrollY == 0.0D) {
+            return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
+        }
+
+        double oldZoom = zoom;
+
+        if (scrollY > 0) {
+            zoom = Math.min(MAX_ZOOM, zoom * ZOOM_STEP);
+        } else {
+            zoom = Math.max(MIN_ZOOM, zoom / ZOOM_STEP);
+        }
+
+        double zoomRatio = zoom / oldZoom;
+
+        cameraX = mouseX - width / 2.0D
+                - (mouseX - width / 2.0D - cameraX) * zoomRatio;
+
+        cameraY = mouseY - height / 2.0D
+                - (mouseY - height / 2.0D - cameraY) * zoomRatio;
+
+        return true;
+    }
+
+    @Override
+    public void render(
+            GuiGraphics graphics,
+            int mouseX,
+            int mouseY,
+            float partialTick
+    ) {
+        // Космический фон остаётся неподвижным.
         graphics.blit(
                 COSMIC_BACKGROUND,
                 0, 0, 0,
@@ -46,6 +129,32 @@ public class SkillTreeScreen extends Screen {
                 1920, 1080
         );
 
+        // Камера перемещает и масштабирует только древо.
+        graphics.pose().pushPose();
+
+        graphics.pose().translate(
+                (float) (width / 2.0D + cameraX),
+                (float) (height / 2.0D + cameraY),
+                0.0F
+        );
+
+        graphics.pose().scale(
+                (float) zoom,
+                (float) zoom,
+                1.0F
+        );
+
+        graphics.pose().translate(
+                -width / 2.0F,
+                -height / 2.0F,
+                0.0F
+        );
+
+        renderSkillTree(graphics);
+
+        graphics.pose().popPose();
+
+        // Интерфейс поверх камеры остаётся неподвижным.
         graphics.drawCenteredString(
                 font,
                 "ДРЕВО ТАЛАНТОВ",
@@ -63,6 +172,16 @@ public class SkillTreeScreen extends Screen {
                 true
         );
 
+        graphics.drawCenteredString(
+                font,
+                "ПКМ — перемещение | Колёсико — масштаб",
+                width / 2,
+                height - 20,
+                0xFFB8D9E8
+        );
+    }
+
+    private void renderSkillTree(GuiGraphics graphics) {
         int centerX = width / 2;
         int centerY = height / 2;
 
