@@ -17,7 +17,7 @@ public class SkillTreeClientEvents {
 
     @SubscribeEvent
     public static void onClientTick(ClientTickEvent.Post event) {
-        while (ModKeyMappings.OPEN_SKILL_TREE.consumeClick()) {
+        if (ModKeyMappings.OPEN_SKILL_TREE.consumeClick()) {
             Minecraft minecraft = Minecraft.getInstance();
 
             if (minecraft.player != null) {
