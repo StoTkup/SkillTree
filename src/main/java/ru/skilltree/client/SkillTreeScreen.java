@@ -29,7 +29,7 @@ public class SkillTreeScreen extends Screen {
             int mouseY,
             float partialTick
     ) {
-        renderBackground(graphics, mouseX, mouseY, partialTick);
+        graphics.fill(0, 0, width, height, 0xFF000000);
 
         int left = width / 2 - 180;
         int top = height / 2 - 110;
