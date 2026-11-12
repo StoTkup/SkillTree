@@ -21,9 +21,15 @@ public class SkillTreeScreen extends Screen {
     private static final double MAX_ZOOM = 2.5D;
     private static final double ZOOM_STEP = 1.1D;
 
+    // Текущее положение камеры
     private double cameraX = 0.0D;
     private double cameraY = 0.0D;
     private double zoom = 1.0D;
+
+    // Целевое положение для плавного движения
+    private double targetCameraX = 0.0D;
+    private double targetCameraY = 0.0D;
+    private double targetZoom = 1.0D;
 
     private boolean draggingCamera = false;
 
@@ -75,8 +81,9 @@ public class SkillTreeScreen extends Screen {
             double dragY
     ) {
         if (button == 1 && draggingCamera) {
-            cameraX += dragX;
-            cameraY += dragY;
+            targetCameraX += dragX;
+            targetCameraY += dragY;
+            clampCamera();
             return true;
         }
 
@@ -94,23 +101,52 @@ public class SkillTreeScreen extends Screen {
             return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
         }
 
-        double oldZoom = zoom;
+        double oldZoom = targetZoom;
 
         if (scrollY > 0) {
-            zoom = Math.min(MAX_ZOOM, zoom * ZOOM_STEP);
+            targetZoom = Math.min(MAX_ZOOM, targetZoom * ZOOM_STEP);
         } else {
-            zoom = Math.max(MIN_ZOOM, zoom / ZOOM_STEP);
+            targetZoom = Math.max(MIN_ZOOM, targetZoom / ZOOM_STEP);
         }
 
-        double zoomRatio = zoom / oldZoom;
+        double ratio = targetZoom / oldZoom;
 
-        cameraX = mouseX - width / 2.0D
-                - (mouseX - width / 2.0D - cameraX) * zoomRatio;
+        targetCameraX = mouseX - width / 2.0D
+                - (mouseX - width / 2.0D - targetCameraX) * ratio;
 
-        cameraY = mouseY - height / 2.0D
-                - (mouseY - height / 2.0D - cameraY) * zoomRatio;
+        targetCameraY = mouseY - height / 2.0D
+                - (mouseY - height / 2.0D - targetCameraY) * ratio;
 
+        clampCamera();
         return true;
+    }
+
+    // Ограничиваем перемещение, чтобы фон не открывал пустые края.
+    private void clampCamera() {
+        double backgroundWidth = getBackgroundWidth();
+        double backgroundHeight = getBackgroundHeight();
+
+        double maxX = Math.max(
+                0.0D,
+                backgroundWidth * targetZoom / 2.0D - width / 2.0D
+        );
+
+        double maxY = Math.max(
+                0.0D,
+                backgroundHeight * targetZoom / 2.0D - height / 2.0D
+        );
+
+        targetCameraX = Math.max(-maxX, Math.min(maxX, targetCameraX));
+        targetCameraY = Math.max(-maxY, Math.min(maxY, targetCameraY));
+    }
+
+    // Фон больше экрана, но сохраняет исходные пропорции 16:9.
+    private double getBackgroundWidth() {
+        return Math.max(width, height * 16.0D / 9.0D) * 5.0D;
+    }
+
+    private double getBackgroundHeight() {
+        return getBackgroundWidth() * 9.0D / 16.0D;
     }
 
     @Override
@@ -120,18 +156,16 @@ public class SkillTreeScreen extends Screen {
             int mouseY,
             float partialTick
     ) {
-        // Космический фон остаётся неподвижным.
-        graphics.blit(
-                COSMIC_BACKGROUND,
-                0, 0, 0,
-                0.0F, 0.0F,
-                width, height,
-                1920, 1080
-        );
+        // Плавное приближение камеры к целевым значениям.
+        double smooth = 0.18D;
 
-        // Камера перемещает и масштабирует только древо.
+        cameraX += (targetCameraX - cameraX) * smooth;
+        cameraY += (targetCameraY - cameraY) * smooth;
+        zoom += (targetZoom - zoom) * smooth;
+
         graphics.pose().pushPose();
 
+        // Общая камера для фона и древа.
         graphics.pose().translate(
                 (float) (width / 2.0D + cameraX),
                 (float) (height / 2.0D + cameraY),
@@ -150,11 +184,26 @@ public class SkillTreeScreen extends Screen {
                 0.0F
         );
 
+        // Космос теперь движется вместе с камерой.
+        int backgroundWidth = (int) getBackgroundWidth();
+        int backgroundHeight = (int) getBackgroundHeight();
+
+        graphics.blit(
+                COSMIC_BACKGROUND,
+                (width - backgroundWidth) / 2,
+                (height - backgroundHeight) / 2,
+                0, 0,
+                backgroundWidth,
+                backgroundHeight,
+                1920, 1080
+        );
+
+        // Древо находится в том же пространстве, что и фон.
         renderSkillTree(graphics);
 
         graphics.pose().popPose();
 
-        // Интерфейс поверх камеры остаётся неподвижным.
+        // HUD остаётся неподвижным поверх космоса.
         graphics.drawCenteredString(
                 font,
                 "ДРЕВО ТАЛАНТОВ",
