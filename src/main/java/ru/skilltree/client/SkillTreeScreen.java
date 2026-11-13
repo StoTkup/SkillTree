@@ -151,7 +151,7 @@ public class SkillTreeScreen extends Screen {
     }
 
     @Override
-    public void render(Minecraft minecraft = Minecraft.getInstance();
+    public void render(
             GuiGraphics graphics,
             int mouseX,
             int mouseY,
