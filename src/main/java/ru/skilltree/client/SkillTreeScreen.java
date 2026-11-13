@@ -249,36 +249,56 @@ graphics.drawCenteredString(
         );
     }
 
-    private void renderSkillTree(GuiGraphics graphics) {
-        int centerX = width / 2;
-        int centerY = height / 2;
+    
+private void renderSkillTree(GuiGraphics graphics) {
+    int centerX = width / 2;
+    int centerY = height / 2;
 
-        graphics.fill(
-                centerX - 18, centerY - 18,
-                centerX + 18, centerY + 18,
-                0x5537D9D0
-        );
+    graphics.fill(
+            centerX - 18, centerY - 18,
+            centerX + 18, centerY + 18,
+            0x5537D9D0
+    );
 
-        graphics.fill(
-                centerX - 11, centerY - 11,
-                centerX + 11, centerY + 11,
-                0xAA38CFCB
-        );
+    graphics.fill(
+            centerX - 11, centerY - 11,
+            centerX + 11, centerY + 11,
+            0xAA38CFCB
+    );
 
-        graphics.fill(
-                centerX - 5, centerY - 5,
-                centerX + 5, centerY + 5,
-                0xFFFFFFFF
-        );
+    graphics.fill(
+            centerX - 5, centerY - 5,
+            centerX + 5, centerY + 5,
+            0xFFFFFFFF
+    );
 
-        graphics.drawCenteredString(
-                font,
-                "КОСМИЧЕСКОЕ ЯДРО",
-                centerX,
-                centerY + 28,
-                TEXT_COLOR
-        );
-    }
+    graphics.drawCenteredString(
+            font,
+            "КОСМИЧЕСКОЕ ЯДРО",
+            centerX,
+            centerY + 28,
+            TEXT_COLOR
+    );
+
+    // Первый тестовый талант
+    int talentX = centerX;
+    int talentY = centerY - 85;
+
+    graphics.fill(
+            talentX - 35, talentY - 15,
+            talentX + 35, talentY + 15,
+            0xCC176B65
+    );
+
+    graphics.drawCenteredString(
+            font,
+            "Первый удар",
+            talentX,
+            talentY - 4,
+            TEXT_COLOR
+    );
+}
+
 
     @Override
     public boolean isPauseScreen() {
