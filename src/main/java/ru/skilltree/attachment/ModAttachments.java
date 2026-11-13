@@ -32,7 +32,7 @@ public class ModAttachments {
     // Список изученных игроком талантов
     public static final Supplier<AttachmentType<List<String>>> LEARNED_TALENTS =
             ATTACHMENTS.register("learned_talents", () ->
-                    AttachmentType.builder(List::<String>of)
+                    AttachmentType.builder(()List::<String>of())
                             .serialize(Codec.STRING.listOf())
                             .copyOnDeath()
                             .build()
