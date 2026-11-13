@@ -197,7 +197,16 @@ public class SkillTreeScreen extends Screen {
         0.0F, 0.0F,
         1920, 1080,
         1920, 1080
-        );
+);
+
+// Затемняем космический фон.
+graphics.fill(
+        (width - backgroundWidth) / 2,
+        (height - backgroundHeight) / 2,
+        (width + backgroundWidth) / 2,
+        (height + backgroundHeight) / 2,
+        0x66000000
+);
 
         // Древо находится в том же пространстве, что и фон.
         renderSkillTree(graphics);
@@ -213,14 +222,21 @@ public class SkillTreeScreen extends Screen {
                 TEXT_COLOR
         );
 
-        graphics.drawString(
-                font,
-                "◆ Души: 0",
-                width - 100,
-                18,
-                SOUL_COLOR,
-                true
-        );
+        
+int souls = minecraft.player != null
+        ? minecraft.player.getData(
+                ru.skilltree.attachment.ModAttachments.SOULS.get()
+        )
+        : 0;
+
+graphics.drawCenteredString(
+        font,
+        "◆ Души: " + souls,
+        width / 2,
+        38,
+        SOUL_COLOR
+);
+
 
         graphics.drawCenteredString(
                 font,
