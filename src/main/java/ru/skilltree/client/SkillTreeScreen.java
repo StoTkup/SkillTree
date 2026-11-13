@@ -280,6 +280,7 @@ graphics.drawCenteredString(
     }
 
     
+
 private void renderSkillTree(GuiGraphics graphics) {
     int centerX = width / 2;
     int centerY = height / 2;
@@ -310,14 +311,22 @@ private void renderSkillTree(GuiGraphics graphics) {
             TEXT_COLOR
     );
 
-    // Первый тестовый талант
+    // Проверяем, изучен ли талант
+    boolean learned = Minecraft.getInstance().player != null
+            && Minecraft.getInstance().player.getData(
+                    ru.skilltree.attachment.ModAttachments.LEARNED_TALENTS.get()
+            ).contains("warrior_first_strike");
+
     int talentX = centerX;
     int talentY = centerY - 85;
+
+    // Цвет зависит от состояния таланта
+    int talentColor = learned ? 0xFFFFD54A : 0xCC176B65;
 
     graphics.fill(
             talentX - 35, talentY - 15,
             talentX + 35, talentY + 15,
-            0xCC176B65
+            talentColor
     );
 
     graphics.drawCenteredString(
@@ -328,6 +337,7 @@ private void renderSkillTree(GuiGraphics graphics) {
             TEXT_COLOR
     );
 }
+
 
 
     @Override
