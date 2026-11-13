@@ -190,12 +190,13 @@ public class SkillTreeScreen extends Screen {
 
         graphics.blit(
                 COSMIC_BACKGROUND,
-                (width - backgroundWidth) / 2,
-                (height - backgroundHeight) / 2,
-                0, 0,
-                backgroundWidth,
-                backgroundHeight,
-                1920, 1080
+        (width - backgroundWidth) / 2,
+        (height - backgroundHeight) / 2,
+        backgroundWidth,
+        backgroundHeight,
+        0.0F, 0.0F,
+        1920, 1080,
+        1920, 1080
         );
 
         // Древо находится в том же пространстве, что и фон.
