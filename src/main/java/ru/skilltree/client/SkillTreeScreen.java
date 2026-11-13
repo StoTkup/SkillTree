@@ -53,15 +53,45 @@ public class SkillTreeScreen extends Screen {
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
-    @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == 1) {
-            draggingCamera = true;
+    
+@Override
+public boolean mouseClicked(double mouseX, double mouseY, int button) {
+
+    if (button == 0) {
+        double treeX = (mouseX - width / 2.0D - cameraX) / zoom
+                + width / 2.0D;
+
+        double treeY = (mouseY - height / 2.0D - cameraY) / zoom
+                + height / 2.0D;
+
+        int talentX = width / 2;
+        int talentY = height / 2 - 85;
+
+        if (treeX >= talentX - 35
+                && treeX <= talentX + 35
+                && treeY >= talentY - 15
+                && treeY <= talentY + 15) {
+
+            if (Minecraft.getInstance().getConnection() != null) {
+                Minecraft.getInstance().getConnection().send(
+                        new ru.skilltree.network.LearnTalentPacket(
+                                "warrior_first_strike"
+                        )
+                );
+            }
+
             return true;
         }
-
-        return super.mouseClicked(mouseX, mouseY, button);
     }
+
+    if (button == 1) {
+        draggingCamera = true;
+        return true;
+    }
+
+    return super.mouseClicked(mouseX, mouseY, button);
+}
+
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
