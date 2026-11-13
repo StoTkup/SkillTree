@@ -1,16 +1,18 @@
 package ru.skilltree.talents;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Каталог всех талантов мода.
- */
 public class TalentRegistry {
 
-    private static final List<Talent> TALENTS = List.of();
+    private static final List<Talent> TALENTS = new ArrayList<>();
+
+    static {
+        TALENTS.addAll(WarriorTalents.getAll());
+    }
 
     public static List<Talent> getAll() {
-        return TALENTS;
+        return List.copyOf(TALENTS);
     }
 
     public static Talent getById(String id) {
