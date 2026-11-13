@@ -1,6 +1,7 @@
 
 package ru.skilltree.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -150,12 +151,13 @@ public class SkillTreeScreen extends Screen {
     }
 
     @Override
-    public void render(
+    public void render(Minecraft minecraft = Minecraft.getInstance();
             GuiGraphics graphics,
             int mouseX,
             int mouseY,
             float partialTick
     ) {
+        Minecraft minecraft = Minecraft.getInstance();
         // Плавное приближение камеры к целевым значениям.
         double smooth = 0.18D;
 
