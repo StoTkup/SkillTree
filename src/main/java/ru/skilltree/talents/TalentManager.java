@@ -1,7 +1,9 @@
+
 package ru.skilltree.talents;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import ru.skilltree.attachment.ModAttachments;
 import ru.skilltree.soul.SoulManager;
@@ -16,40 +18,46 @@ public class TalentManager {
             return false;
         }
 
-        // Проверяем души
-        if (SoulManager.getSouls(player) < talent.soulCost()) {
+        List<String> learned =
+                player.getData(ModAttachments.LEARNED_TALENTS.get());
+
+        if (learned.contains(talent.id())) {
             return false;
         }
 
-        // Проверяем необходимые таланты
-        List<String> learned =
-                player.getData(ModAttachments.LEARNED_TALENTS.get());
+        if (SoulManager.getSouls(player) < talent.soulCost()) {
+            return false;
+        }
 
         if (!learned.containsAll(talent.requiredTalents())) {
             return false;
         }
 
-        // Проверяем необходимые предметы
-        for (String itemId : talent.requiredItems()) {
-            boolean found = false;
+        // Проверяем, хватает ли предметов с учётом повторений
+        List<String> remainingItems =
+                new ArrayList<>(talent.requiredItems());
 
-            for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
-                ItemStack stack = player.getInventory().getItem(slot);
+        for (int slot = 0;
+             slot < player.getInventory().getContainerSize();
+             slot++) {
 
-                if (!stack.isEmpty()
-                        && net.minecraft.core.registries.BuiltInRegistries.ITEM
-                        .getKey(stack.getItem()).toString().equals(itemId)) {
-                    found = true;
-                    break;
-                }
+            ItemStack stack = player.getInventory().getItem(slot);
+
+            if (stack.isEmpty()) {
+                continue;
             }
 
-            if (!found) {
-                return false;
+            String itemId = BuiltInRegistries.ITEM
+                    .getKey(stack.getItem()).toString();
+
+            for (int i = remainingItems.size() - 1; i >= 0; i--) {
+                if (remainingItems.get(i).equals(itemId)) {
+                    remainingItems.remove(i);
+                }
             }
         }
 
-        return true;
+        return remainingItems.isEmpty();
     }
 
     public static boolean learn(ServerPlayer player, String talentId) {
@@ -63,22 +71,22 @@ public class TalentManager {
                 player.getData(ModAttachments.LEARNED_TALENTS.get())
         );
 
-        if (learned.contains(talentId)) {
-            return false;
-        }
-
         if (!SoulManager.removeSouls(player, talent.soulCost())) {
             return false;
         }
 
         // Списываем необходимые предметы
         for (String itemId : talent.requiredItems()) {
-            for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+            for (int slot = 0;
+                 slot < player.getInventory().getContainerSize();
+                 slot++) {
+
                 ItemStack stack = player.getInventory().getItem(slot);
 
                 if (!stack.isEmpty()
-                        && net.minecraft.core.registries.BuiltInRegistries.ITEM
-                        .getKey(stack.getItem()).toString().equals(itemId)) {
+                        && BuiltInRegistries.ITEM.getKey(stack.getItem())
+                        .toString().equals(itemId)) {
+
                     stack.shrink(1);
                     break;
                 }
