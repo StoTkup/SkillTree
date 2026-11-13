@@ -4,7 +4,6 @@ package ru.skilltree.network;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -61,15 +60,7 @@ public record LearnTalentPacket(String talentId)
                         new TalentSyncPacket(learned)
                 );
 
-                player.sendSystemMessage(
-                        Component.literal("Талант успешно изучен!")
-                );
-            } else {
-                player.sendSystemMessage(
-                        Component.literal(
-                                "Не удалось изучить талант: проверь требования."
-                        )
-                );
+               
             }
         });
     }
