@@ -1,40 +1,28 @@
-
 package ru.skilltree.network;
 
-import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
-
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import ru.skilltree.SkillTreeMod;
-import ru.skilltree.attachment.ModAttachments;
 
-import java.util.List;
-
-@EventBusSubscriber(modid = SkillTreeMod.MOD_ID)
-public class SoulLoginSync {
+@EventBusSubscriber(
+        modid = SkillTreeMod.MOD_ID,
+        bus = EventBusSubscriber.Bus.MOD
+)
+public class ModNetworking {
 
     @SubscribeEvent
-    public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
+    public static void register(RegisterPayloadHandlersEvent event) {
+        event.registrar("1").playToClient(
+                SoulSyncPacket.TYPE,
+                SoulSyncPacket.STREAM_CODEC,
+                SoulSyncPacket::handle
+        );
 
-            // Синхронизация душ
-            int souls = player.getData(ModAttachments.SOULS.get());
-
-            PacketDistributor.sendToPlayer(
-                    player,
-                    new SoulSyncPacket(souls)
-            );
-
-            // Синхронизация изученных талантов
-            List<String> talents =
-                    player.getData(ModAttachments.LEARNED_TALENTS.get());
-
-            PacketDistributor.sendToPlayer(
-                    player,
-                    new TalentSyncPacket(talents)
-            );
-        }
+        event.registrar("1").playToClient(
+                TalentSyncPacket.TYPE,
+                TalentSyncPacket.STREAM_CODEC,
+                TalentSyncPacket::handle
+        );
     }
 }
