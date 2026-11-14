@@ -71,10 +71,10 @@ public boolean mouseClicked(double mouseX, double mouseY, int button) {
         int talentX = width / 2;
         int talentY = height / 2 - 85;
 
-        if (treeX >= talentX - 35
-                && treeX <= talentX + 35
-                && treeY >= talentY - 15
-                && treeY <= talentY + 15) {
+        if (treeX >= talentX - 30
+                && treeX <= talentX + 30
+                && treeY >= talentY - 28
+                && treeY <= talentY + 28) {
 
             if (Minecraft.getInstance().getConnection() != null) {
                 Minecraft.getInstance().getConnection().send(
@@ -335,12 +335,7 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
             talentColor
     );
 
-    // Железный меч
-    graphics.renderItem(
-            new ItemStack(Items.IRON_SWORD),
-            talentX - 19,
-            talentY - 8
-    );
+
     
 
 // Цвета рамки
