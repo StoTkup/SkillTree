@@ -17,6 +17,11 @@ public class SkillTreeScreen extends Screen {
                     "skilltree",
                     "textures/gui/cosmic_background.png"
             );
+    private static final ResourceLocation TALENT_FRAME =
+        ResourceLocation.fromNamespaceAndPath(
+                "skilltree",
+                "textures/gui/talent_frame.png"
+        );
 
     private static final int TEXT_COLOR = 0xFFFFFFFF;
     private static final int SOUL_COLOR = 0xFF65E8DF;
