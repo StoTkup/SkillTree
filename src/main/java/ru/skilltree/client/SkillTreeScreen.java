@@ -342,80 +342,81 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
             talentY - 8
     );
     
-// Цвет рамки зависит от изучения таланта
-int frameColor = learned ? 0xFFFFD54A : 0xFF263744;
-int innerColor = learned ? 0xFF66501F : 0xFF124B4B;
 
-// Тень рамки
+// Цвета рамки
+int metal = learned ? 0xFFFFD45A : 0xFF38515D;
+int glow = learned ? 0xFFFFC94A : 0xFF32DCD2;
+int dark = learned ? 0xFF65451A : 0xFF10252F;
+
+// Внешнее свечение
 graphics.fill(
-        talentX - 29, talentY - 25,
-        talentX + 29, talentY + 25,
-        0x99000000
+        talentX - 30, talentY - 28,
+        talentX + 30, talentY + 28,
+        learned ? 0x44FFD45A : 0x4432DCD2
 );
 
-// Внешняя металлическая рамка
+// Тёмная подложка
 graphics.fill(
-        talentX - 27, talentY - 23,
-        talentX + 27, talentY + 23,
-        frameColor
+        talentX - 28, talentY - 26,
+        talentX + 28, talentY + 26,
+        0xFF080F19
 );
 
-// Светлые грани металла
+// Металлическая основа
 graphics.fill(
-        talentX - 26, talentY - 22,
-        talentX + 26, talentY - 20,
-        0xFF8AA6AD
+        talentX - 26, talentY - 24,
+        talentX + 26, talentY + 24,
+        metal
 );
 
+// Внутренняя тёмная поверхность
 graphics.fill(
-        talentX - 26, talentY - 22,
-        talentX - 24, talentY + 22,
-        0xFF66818B
+        talentX - 23, talentY - 21,
+        talentX + 23, talentY + 21,
+        dark
 );
 
-// Тёмные нижние грани
+// Бирюзовая внутренняя окантовка
 graphics.fill(
-        talentX - 26, talentY + 20,
-        talentX + 26, talentY + 22,
-        0xFF101923
+        talentX - 21, talentY - 19,
+        talentX + 21, talentY - 18,
+        glow
+);
+graphics.fill(
+        talentX - 21, talentY + 18,
+        talentX + 21, talentY + 19,
+        glow
+);
+graphics.fill(
+        talentX - 21, talentY - 18,
+        talentX - 20, talentY + 18,
+        glow
+);
+graphics.fill(
+        talentX + 20, talentY - 18,
+        talentX + 21, talentY + 18,
+        glow
 );
 
-graphics.fill(
-        talentX + 24, talentY - 20,
-        talentX + 26, talentY + 20,
-        0xFF101923
-);
+// Декоративные металлические уголки
+graphics.fill(talentX - 28, talentY - 26,
+        talentX - 19, talentY - 23, metal);
+graphics.fill(talentX + 19, talentY - 26,
+        talentX + 28, talentY - 23, metal);
+graphics.fill(talentX - 28, talentY + 23,
+        talentX - 19, talentY + 26, metal);
+graphics.fill(talentX + 19, talentY + 23,
+        talentX + 28, talentY + 26, metal);
 
-// Внутренняя бирюзовая поверхность
-graphics.fill(
-        talentX - 23, talentY - 19,
-        talentX + 23, talentY + 19,
-        innerColor
-);
-
-// Бирюзовые акценты по краям
-graphics.fill(
-        talentX - 23, talentY - 19,
-        talentX - 21, talentY + 19,
-        0xFF39CFCB
-);
-
-graphics.fill(
-        talentX + 21, talentY - 19,
-        talentX + 23, talentY + 19,
-        0xFF39CFCB
-);
-
-
-    // Белый плюс
-    graphics.drawString(
-            font,
-            "+",
-            talentX + 5,
-            talentY - 4,
-            0xFFFFFFFF,
-            false
-    );
+// Световые точки в уголках
+graphics.fill(talentX - 26, talentY - 25,
+        talentX - 23, talentY - 22, glow);
+graphics.fill(talentX + 23, talentY - 25,
+        talentX + 26, talentY - 22, glow);
+graphics.fill(talentX - 26, talentY + 22,
+        talentX - 23, talentY + 25, glow);
+graphics.fill(talentX + 23, talentY + 22,
+        talentX + 26, talentY + 25, glow);
 
     // Координаты курсора с учётом камеры и масштаба
     double treeMouseX = (mouseX - width / 2.0D - cameraX) / zoom
