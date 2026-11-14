@@ -343,80 +343,18 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
 
     
 
-// Цвета рамки
-int metal = learned ? 0xFFFFD45A : 0xFF38515D;
-int glow = learned ? 0xFFFFC94A : 0xFF32DCD2;
-int dark = learned ? 0xFF65451A : 0xFF10252F;
-
-// Внешнее свечение
-graphics.fill(
-        talentX - 30, talentY - 28,
-        talentX + 30, talentY + 28,
-        learned ? 0x44FFD45A : 0x4432DCD2
+// Рамка таланта — тёмный артефакт
+graphics.blit(
+        TALENT_FRAME,
+        talentX - 32,
+        talentY - 32,
+        0,
+        0,
+        64,
+        64,
+        64,
+        64
 );
-
-// Тёмная подложка
-graphics.fill(
-        talentX - 28, talentY - 26,
-        talentX + 28, talentY + 26,
-        0xFF080F19
-);
-
-// Металлическая основа
-graphics.fill(
-        talentX - 26, talentY - 24,
-        talentX + 26, talentY + 24,
-        metal
-);
-
-// Внутренняя тёмная поверхность
-graphics.fill(
-        talentX - 23, talentY - 21,
-        talentX + 23, talentY + 21,
-        dark
-);
-
-// Бирюзовая внутренняя окантовка
-graphics.fill(
-        talentX - 21, talentY - 19,
-        talentX + 21, talentY - 18,
-        glow
-);
-graphics.fill(
-        talentX - 21, talentY + 18,
-        talentX + 21, talentY + 19,
-        glow
-);
-graphics.fill(
-        talentX - 21, talentY - 18,
-        talentX - 20, talentY + 18,
-        glow
-);
-graphics.fill(
-        talentX + 20, talentY - 18,
-        talentX + 21, talentY + 18,
-        glow
-);
-
-// Декоративные металлические уголки
-graphics.fill(talentX - 28, talentY - 26,
-        talentX - 19, talentY - 23, metal);
-graphics.fill(talentX + 19, talentY - 26,
-        talentX + 28, talentY - 23, metal);
-graphics.fill(talentX - 28, talentY + 23,
-        talentX - 19, talentY + 26, metal);
-graphics.fill(talentX + 19, talentY + 23,
-        talentX + 28, talentY + 26, metal);
-
-// Световые точки в уголках
-graphics.fill(talentX - 26, talentY - 25,
-        talentX - 23, talentY - 22, glow);
-graphics.fill(talentX + 23, talentY - 25,
-        talentX + 26, talentY - 22, glow);
-graphics.fill(talentX - 26, talentY + 22,
-        talentX - 23, talentY + 25, glow);
-graphics.fill(talentX + 23, talentY + 22,
-        talentX + 26, talentY + 25, glow);
     // Меч поверх рамки
 graphics.renderItem(
         new ItemStack(Items.IRON_SWORD),
