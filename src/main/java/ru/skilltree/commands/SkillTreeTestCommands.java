@@ -9,6 +9,11 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import ru.skilltree.SkillTreeMod;
 import ru.skilltree.soul.SoulManager;
+import net.neoforged.neoforge.network.PacketDistributor;
+import ru.skilltree.attachment.ModAttachments;
+import ru.skilltree.network.TalentSyncPacket;
+
+import java.util.List;
 
 @EventBusSubscriber(modid = SkillTreeMod.MOD_ID)
 public class SkillTreeTestCommands {
@@ -169,6 +174,34 @@ public class SkillTreeTestCommands {
                                                             + "/skilltree test set <число>\n"
                                                             + "/skilltree test reset\n"
                                                             + "/skilltree test help"
+                                                    ),
+                                                    false
+                                            );
+
+                                            return 1;
+                                        })
+                                                                )
+                        )
+                        .then(Commands.literal("talents")
+                                .then(Commands.literal("reset")
+                                        .requires(source -> source.hasPermission(2))
+                                        .executes(context -> {
+                                            var player = context.getSource()
+                                                    .getPlayerOrException();
+
+                                            player.setData(
+                                                    ModAttachments.LEARNED_TALENTS.get(),
+                                                    List.of()
+                                            );
+
+                                            PacketDistributor.sendToPlayer(
+                                                    player,
+                                                    new TalentSyncPacket(List.of())
+                                            );
+
+                                            context.getSource().sendSuccess(
+                                                    () -> Component.literal(
+                                                            "Все таланты сброшены. Души не возвращены."
                                                     ),
                                                     false
                                             );
