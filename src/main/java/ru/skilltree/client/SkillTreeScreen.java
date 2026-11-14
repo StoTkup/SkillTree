@@ -245,7 +245,7 @@ graphics.fill(
 );
 
         // Древо находится в том же пространстве, что и фон.
-        renderSkillTree(graphics);
+        renderSkillTree(graphics, mouseX, mouseY);
 
         graphics.pose().popPose();
 
@@ -285,7 +285,7 @@ graphics.drawCenteredString(
 
     
 
-private void renderSkillTree(GuiGraphics graphics) {
+private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
     int centerX = width / 2;
     int centerY = height / 2;
 
@@ -351,6 +351,12 @@ private void renderSkillTree(GuiGraphics graphics) {
             false
     );
 }
+        // Проверяем, находится ли курсор над талантом
+    double treeMouseX = (minecraftMouseX - width / 2.0D - cameraX) / zoom
+            + width / 2.0D;
+
+    double treeMouseY = (minecraftMouseY - height / 2.0D - cameraY) / zoom
+            + height / 2.0D;
 
 
     @Override
@@ -358,3 +364,51 @@ private void renderSkillTree(GuiGraphics graphics) {
         return false;
     }
 }
+    // Проверяем положение курсора с учётом камеры и масштаба
+    double treeMouseX = (mouseX - width / 2.0D - cameraX) / zoom
+            + width / 2.0D;
+
+    double treeMouseY = (mouseY - height / 2.0D - cameraY) / zoom
+            + height / 2.0D;
+
+    hoveringFirstStrike = treeMouseX >= talentX - 24
+            && treeMouseX <= talentX + 24
+            && treeMouseY >= talentY - 20
+            && treeMouseY <= talentY + 20;
+
+    if (hoveringFirstStrike) {
+        int tooltipX = (int) treeMouseX + 12;
+        int tooltipY = (int) treeMouseY + 12;
+
+        graphics.fill(
+                tooltipX,
+                tooltipY,
+                tooltipX + 175,
+                tooltipY + 48,
+                0xEE101B2A
+        );
+
+        graphics.drawString(
+                font,
+                "Первый удар",
+                tooltipX + 6,
+                tooltipY + 5,
+                0xFFFFFFFF
+        );
+
+        graphics.drawString(
+                font,
+                "Урон первой атаки выше",
+                tooltipX + 6,
+                tooltipY + 18,
+                0xFFD5E5EC
+        );
+
+        graphics.drawString(
+                font,
+                "Стоимость: 10 душ",
+                tooltipX + 6,
+                tooltipY + 32,
+                0xFF65E8DF
+        );
+    }
