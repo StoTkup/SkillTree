@@ -407,3 +407,4 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
 public boolean isPauseScreen() {
     return false;
 }
+    }
