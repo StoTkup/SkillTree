@@ -417,6 +417,22 @@ graphics.fill(talentX - 26, talentY + 22,
         talentX - 23, talentY + 25, glow);
 graphics.fill(talentX + 23, talentY + 22,
         talentX + 26, talentY + 25, glow);
+    // Меч поверх рамки
+graphics.renderItem(
+        new ItemStack(Items.IRON_SWORD),
+        talentX - 19,
+        talentY - 8
+);
+
+// Белый плюс
+graphics.drawString(
+        font,
+        "+",
+        talentX + 5,
+        talentY - 4,
+        0xFFFFFFFF,
+        false
+);
 
     // Координаты курсора с учётом камеры и масштаба
     double treeMouseX = (mouseX - width / 2.0D - cameraX) / zoom
