@@ -285,6 +285,7 @@ graphics.drawCenteredString(
 
     
 
+
 private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
     int centerX = width / 2;
     int centerY = height / 2;
@@ -350,21 +351,8 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
             0xFFFFFFFF,
             false
     );
-}
-        // Проверяем, находится ли курсор над талантом
-    double treeMouseX = (minecraftMouseX - width / 2.0D - cameraX) / zoom
-            + width / 2.0D;
 
-    double treeMouseY = (minecraftMouseY - height / 2.0D - cameraY) / zoom
-            + height / 2.0D;
-
-
-    @Override
-    public boolean isPauseScreen() {
-        return false;
-    }
-}
-    // Проверяем положение курсора с учётом камеры и масштаба
+    // Координаты курсора с учётом камеры и масштаба
     double treeMouseX = (mouseX - width / 2.0D - cameraX) / zoom
             + width / 2.0D;
 
@@ -376,6 +364,7 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
             && treeMouseY >= talentY - 20
             && treeMouseY <= talentY + 20;
 
+    // Подсказка при наведении
     if (hoveringFirstStrike) {
         int tooltipX = (int) treeMouseX + 12;
         int tooltipY = (int) treeMouseY + 12;
@@ -412,3 +401,9 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
                 0xFF65E8DF
         );
     }
+}
+
+@Override
+public boolean isPauseScreen() {
+    return false;
+}
