@@ -341,6 +341,71 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
             talentX - 19,
             talentY - 8
     );
+    
+// Цвет рамки зависит от изучения таланта
+int frameColor = learned ? 0xFFFFD54A : 0xFF263744;
+int innerColor = learned ? 0xFF66501F : 0xFF124B4B;
+
+// Тень рамки
+graphics.fill(
+        talentX - 29, talentY - 25,
+        talentX + 29, talentY + 25,
+        0x99000000
+);
+
+// Внешняя металлическая рамка
+graphics.fill(
+        talentX - 27, talentY - 23,
+        talentX + 27, talentY + 23,
+        frameColor
+);
+
+// Светлые грани металла
+graphics.fill(
+        talentX - 26, talentY - 22,
+        talentX + 26, talentY - 20,
+        0xFF8AA6AD
+);
+
+graphics.fill(
+        talentX - 26, talentY - 22,
+        talentX - 24, talentY + 22,
+        0xFF66818B
+);
+
+// Тёмные нижние грани
+graphics.fill(
+        talentX - 26, talentY + 20,
+        talentX + 26, talentY + 22,
+        0xFF101923
+);
+
+graphics.fill(
+        talentX + 24, talentY - 20,
+        talentX + 26, talentY + 20,
+        0xFF101923
+);
+
+// Внутренняя бирюзовая поверхность
+graphics.fill(
+        talentX - 23, talentY - 19,
+        talentX + 23, talentY + 19,
+        innerColor
+);
+
+// Бирюзовые акценты по краям
+graphics.fill(
+        talentX - 23, talentY - 19,
+        talentX - 21, talentY + 19,
+        0xFF39CFCB
+);
+
+graphics.fill(
+        talentX + 21, talentY - 19,
+        talentX + 23, talentY + 19,
+        0xFF39CFCB
+);
+
 
     // Белый плюс
     graphics.drawString(
