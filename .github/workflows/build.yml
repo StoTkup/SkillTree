@@ -31,9 +31,18 @@ jobs:
       - name: Build mod
         run: gradle build --no-daemon -PbuildNumber=${{ github.run_number }}
 
+      - name: Generate SHA-256 checksums
+        run: |
+          cd build/libs
+          for file in *.jar; do
+            sha256sum "$file" > "$file.sha256"
+          done
+
       - name: Upload mod JAR
         uses: actions/upload-artifact@v4
         with:
           name: SkillTree-${{ github.run_number }}-JAR
-          path: build/libs/*.jar
+          path: |
+            build/libs/*.jar
+            build/libs/*.jar.sha256
           if-no-files-found: error
