@@ -6,8 +6,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import java.util.List;
 
 public class SkillTreeScreen extends Screen {
@@ -335,8 +333,6 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
 
     int talentX = centerX;
     int talentY = centerY - 85;
-
-    int talentColor = learned ? 0xFFFFD54A : 0xCC176B65;
 
    // Космический фон с мечом и быстрым ударом
 graphics.blit(
