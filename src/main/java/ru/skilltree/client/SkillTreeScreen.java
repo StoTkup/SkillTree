@@ -361,6 +361,38 @@ graphics.blit(
         64,
         64
 );
+    // Зелёная галочка, если талант куплен
+if (learned) {
+    int checkX = talentX + 8;
+    int checkY = talentY - 19;
+
+    // Тёмная обводка
+    int[][] pixels = {
+            {0, 3}, {1, 4}, {2, 3},
+            {3, 2}, {4, 1}, {5, 0}
+    };
+
+    for (int[] pixel : pixels) {
+        graphics.fill(
+                checkX + pixel[0] * 3 - 1,
+                checkY + pixel[1] * 3 - 1,
+                checkX + pixel[0] * 3 + 4,
+                checkY + pixel[1] * 3 + 4,
+                0xFF102B18
+        );
+    }
+
+    // Яркая зелёная галочка
+    for (int[] pixel : pixels) {
+        graphics.fill(
+                checkX + pixel[0] * 3,
+                checkY + pixel[1] * 3,
+                checkX + pixel[0] * 3 + 3,
+                checkY + pixel[1] * 3 + 3,
+                0xFF55FF55
+        );
+    }
+}
 
     // Координаты курсора с учётом камеры и масштаба
     double treeMouseX = (mouseX - width / 2.0D - cameraX) / zoom
