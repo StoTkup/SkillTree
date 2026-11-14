@@ -6,6 +6,9 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import java.util.List;
 
 public class SkillTreeScreen extends Screen {
 
@@ -33,6 +36,7 @@ public class SkillTreeScreen extends Screen {
     private double targetZoom = 1.0D;
 
     private boolean draggingCamera = false;
+    private boolean hoveringFirstStrike = false;
 
     public SkillTreeScreen() {
         super(Component.literal("Древо талантов"));
@@ -285,6 +289,7 @@ private void renderSkillTree(GuiGraphics graphics) {
     int centerX = width / 2;
     int centerY = height / 2;
 
+    // Космическое ядро
     graphics.fill(
             centerX - 18, centerY - 18,
             centerX + 18, centerY + 18,
@@ -320,24 +325,32 @@ private void renderSkillTree(GuiGraphics graphics) {
     int talentX = centerX;
     int talentY = centerY - 85;
 
-    // Цвет зависит от состояния таланта
     int talentColor = learned ? 0xFFFFD54A : 0xCC176B65;
 
+    // Фон значка
     graphics.fill(
-            talentX - 35, talentY - 15,
-            talentX + 35, talentY + 15,
+            talentX - 24, talentY - 20,
+            talentX + 24, talentY + 20,
             talentColor
     );
 
-    graphics.drawCenteredString(
+    // Железный меч
+    graphics.renderItem(
+            new ItemStack(Items.IRON_SWORD),
+            talentX - 19,
+            talentY - 8
+    );
+
+    // Белый плюс
+    graphics.drawString(
             font,
-            "Первый удар",
-            talentX,
+            "+",
+            talentX + 5,
             talentY - 4,
-            TEXT_COLOR
+            0xFFFFFFFF,
+            false
     );
 }
-
 
 
     @Override
