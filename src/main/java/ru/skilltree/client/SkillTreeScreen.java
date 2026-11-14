@@ -22,6 +22,11 @@ public class SkillTreeScreen extends Screen {
                 "skilltree",
                 "textures/gui/talent_frame.png"
         );
+    private static final ResourceLocation FIRST_STRIKE_ICON =
+        ResourceLocation.fromNamespaceAndPath(
+                "skilltree",
+                "textures/gui/first_strike.png"
+        );
 
     private static final int TEXT_COLOR = 0xFFFFFFFF;
     private static final int SOUL_COLOR = 0xFF65E8DF;
@@ -333,17 +338,22 @@ private void renderSkillTree(GuiGraphics graphics, int mouseX, int mouseY) {
 
     int talentColor = learned ? 0xFFFFD54A : 0xCC176B65;
 
-    // Фон значка
-    graphics.fill(
-            talentX - 24, talentY - 20,
-            talentX + 24, talentY + 20,
-            talentColor
-    );
+   // Космический фон с мечом и быстрым ударом
+graphics.blit(
+        FIRST_STRIKE_ICON,
+        talentX - 23,
+        talentY - 23,
+        46,
+        46,
+        0,
+        0,
+        1024,
+        1024,
+        1024,
+        1024
+);
 
-
-    
-
-// Рамка таланта — тёмный артефакт
+// Металлическая рамка поверх изображения
 graphics.blit(
         TALENT_FRAME,
         talentX - 32,
@@ -354,22 +364,6 @@ graphics.blit(
         64,
         64,
         64
-);
-    // Меч поверх рамки
-graphics.renderItem(
-        new ItemStack(Items.IRON_SWORD),
-        talentX - 19,
-        talentY - 8
-);
-
-// Белый плюс
-graphics.drawString(
-        font,
-        "+",
-        talentX + 5,
-        talentY - 4,
-        0xFFFFFFFF,
-        false
 );
 
     // Координаты курсора с учётом камеры и масштаба
